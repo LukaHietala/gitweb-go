@@ -22,3 +22,7 @@ git clone git@your-server:/home/git/repositories/example.git
 ```
 
 For more details, refer to the [official Git documentation](https://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols).
+
+#### Virtualization
+
+If you don't have a separate device to host your Git server, using a VM is a good alternative. You can use a VM such as qemu/kvm with Ubuntu 24.04, as I did. Simply connect to the VM via SSH using its IP address to interact with your Git server.
