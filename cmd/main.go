@@ -73,5 +73,5 @@ func main() {
 		t.RenderTemplate(w, "home.html", nil)
 	})
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":"+config.Port, nil))
 }
