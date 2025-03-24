@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"gopkg.in/yaml.v3"
+	"gitweb-go/config"
 )
 
 type Templates struct {
@@ -23,37 +23,20 @@ func (t *Templates) RenderTemplate(w http.ResponseWriter, name string, data inte
     t.templates.ExecuteTemplate(w, name, data)
 }
 
-type Config struct {
-    ReposPath string `yaml:"repos_path"`
-    Port      string `yaml:"port"`
-}
 
 func main() {
 	t := &Templates{}
 	t.LoadTemplates()
-
-	// default
-	config := Config{
-		Port: "8080",
-		ReposPath: "./repos",
-	}
 
 	// if config file exists, override default one
 	var configPath string
 	flag.StringVar(&configPath, "config", "config.yml", "Path to configuration file")
 	flag.Parse()
 
-	if _, err := os.Stat(configPath); err == nil {
-		data, err := os.ReadFile(configPath)
-		if err != nil {
-			log.Printf("Error reading config file: %v", err)
-		} else {
-			if err := yaml.Unmarshal(data, &config); err != nil {
-				log.Printf("Error parsing config file: %v", err)
-			} else {
-				log.Printf("Loaded configuration from %s", configPath)
-			}
-		}
+	config, err := config.LoadConfig(configPath)
+
+	if err != nil {
+		log.Printf("Error loading config: %s\n", err)
 	}
 
 	// if environment variables are set, override config and default values :)
